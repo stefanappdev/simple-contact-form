@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+   
+</head>
+
+<body>
+
+    <form id="form" >
+        <h1>Contact Us</h1>
+        <label for="firstname">Enter your Firstname:</label>
+		<input type="text" id="firstname" placeholder="firstname" name="firstname">
+		<br/>
+		
+		<label for="lastname">Enter your Lastname:</label>
+		<input type="text" id="lastname" placeholder="lastname" name="lastname">
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+         let form=document.getElementById("form");
+		 form.addEventListener("submit",formSubmit);
+		 
+		 
+		 function formSubmit(event){
+		 
+		 event.preventDefault();
+		 
+		 let firstname=event.target.firstname.value;
+		 let lastname=event.target.lastname.value;
+		 
+		 if(firstname.length===0 || lastname.length===0){
+		 
+		    alert("Please fill all name fields");
+		 
+		 }else{
+		 
+		     alert("Form Submitted");
+		     
+			 console.log("your name is: "+firstname+" "+lastname);
+			
+		 }
+		  
+	}	 
+		
+		
+    </script>
+</body>
+
+</html>
