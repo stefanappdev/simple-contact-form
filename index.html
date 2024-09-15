@@ -5,77 +5,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" 
           content="width=device-width, initial-scale=1.0">
-   
+   <link href="styles.css" type="text/css" rel="stylesheet" /> 
 </head>
 
 <body>
 
-    <form id="form" >
-        <h1>Contact Us</h1>
+    <form id="contactform" >
+        <h1 id="title">Contact Us</h1>
+		
+		<div class="formContainer">
+		
         <label for="firstname">Firstname:</label>
-		<input type="text" id="firstname" class="formIttem"  placeholder="Enter your firstname" name="firstname"  />
-		<br/>
+		<input type="text" id="firstname" class="formInput"  placeholder="Enter your firstname" name="firstname"  />
+		
 		<p class="errors" id="firstnameErr"></p>
-		<br/>
+		
 		
 		<label for="lastname">Lastname:</label>
-		<input type="text" id="lastname" class="formIttem" placeholder="Enter your lastname" name="lastname"  />
-		<br/>
+		<input type="text" id="lastname" class="formInput" placeholder="Enter your lastname" name="lastname"  />
+		
         <p class="errors" id="lastnameErr"></p>
 		
 		
-	<br/>
+	
 	  
 	  
 	  <label for="email"/>Email Address:</label>
-	  <input type='email' id='email' class="formIttem" placeholder='Enter a vaild email' />
+	  <input type='text' name="email" id='email' class="formInput" placeholder='Enter a vaild email' />
+	  <p class="errors" id="emailErr"></p>
 	  
 	  
-	  <br/>
 	  
 	  <label for="phone"/>phone number:</label>
-	  <input type='text' id='phone' class="formIttem" placeholder='e.g. (1)1234567' />
+	  <input type='text' id='phone' name="phone" class="formInput" placeholder='e.g. (1)1234567' />
 	  
 	  
-	  <br/>
+	  
 	  
 	   <p class="errors" id="phoneErr"></p>
 	   
-	   <br/>
+	  
 	  
 	  <label for="query-options"/>How can we help you?</label>
-	  <select class="formIttem" id="query-options">
-			<option>--SELECT--</option>
+	  <select class="formInput" id="query-options">
+			<option>--SELECT AN OPTION--</option>
 			<option>General Enquiries</option>
 			<option>Support</option>
 	  </select>
 
-	<br/>
-	
+
 	<label for="query"/>Describe your issue:</label>
 
-	<input type="text" class="formIttem" id="query" placeholder="What's your issue?" name="query"/>
+	<input type="text" class="formInput" id="query" placeholder="What's your issue?" name="query"/>
 	
-	<br/>
+	
         <p class="errors" id="queryTextErr"> </p>
 
-	<br/>
-
-	<input type='checkbox' class="formIttem" name="consent-checkbox" id='consent-checkbox'/>
+	
+   
+	
+	 
+	 
+	 
+	 </div>
+	 
+	  <div id="consent">
+	<input type='checkbox'  name="consent-checkbox" id='consent-checkbox' required/>
 	<label>By clicking this checkbox and submitting the form I consent to being contacted by the Team </label>
+	</div>
 	
-	
-	<br/>
-	
-	 <input class="formIttem" type="submit" value="Submit">
+	 <input  id="submitButton" type="submit" value="Submit">
 
     </form>
 	
 	
-	<div id="display-msg"></div>
+	<p id="display-msg"></p>
 
     <script>
-         let form=document.getElementById("form");
+         let form=document.getElementById("contactform");
 		 form.addEventListener("submit",formSubmit);
 		 
 		
@@ -91,6 +98,7 @@
 		 let lastname=event.target.lastname.value;
 		 let query=event.target.query.value;
 		 let phone=event.target.phone.value;
+		 let email=event.target.email.value;
 		 
 		 
 		 //errors fields
@@ -98,7 +106,7 @@
 		 let lastnameErr=document.getElementById("lastnameErr");
 		 let queryTextErr=document.getElementById("queryTextErr");
 		 let phoneErr=document.getElementById("phoneErr");
-		 
+		  let emailErr=document.getElementById("emailErr");
 		 
 		 
 		 
@@ -141,7 +149,7 @@
 			 
 			 // regex for to check valid phone numbers
 			  
-			  let phoneRegex= /\(?(\d{1,3})\)?\d{7,11}/ ;
+			  let phoneRegex= /\+?\(?(\d{1,3})\)?\d{7,11}/ ;
 			  
 			  if (phoneRegex.test(phone)===false){
 					 phoneErr.textContent=
@@ -152,9 +160,9 @@
 			 
 			  
 			  //check for unwanted chracters in phone
-			  if (phone.includes("+")|| phone.includes("-")||phone.includes(" ")){
+			  if (phone.includes("-")||phone.includes(" ")){
 			  
-				  phoneErr.textContent="Please re-enter the number without '+', '-' or spaces";
+				  phoneErr.textContent="Please re-enter the number without '-' or spaces";
 				  verified=false;
 			  }
 			  
@@ -165,23 +173,21 @@
 			  }
 			  
 			  
-			  //if no error in validation after submission clear errors and input fields
-			  if(verified){
-			   phoneErr.textContent="";
-			   firstnameErr.textContent= "";
-			   lastnameErr.textContent="";
-			   queryTextErr.textContent="";
-			   
-		
-			   
-			   console.log("firstname: ",firstname);
-			   console.log("lastname: ",lastname);
-			   console.log("phone: ",phone);
-			   console.log("Query:",query);
-			   
-			   
-			   //code to clear fields should go here
+			  
+			  
+			  //Simple validation for email
+			  
+			  let emailRegex=/\w+\@\w+\.\w+/;
+			  if (emailRegex.test(email)===false){
+                    emailErr.textContent="please enter a valid email";		
+                    verified=false;					
 			  }
+			  
+			  
+			  
+			  
+			  
+			  
 			 
 		    return verified;
 		}
@@ -193,18 +199,22 @@
 		 
 		 if (validateForm()){
 		 
-		      
-			  displaymsg.textContent="Your form submission was successful";
+		  let inputs=document.querySelectorAll(".formInput");
+		  let errs=document.querySelectorAll(".errors");
+		  errs.forEach(err=>err.textContent="");
+		  inputs.forEach(input=>input.value="");
+		  displaymsg.textContent="Your form submission was successful";
+		  displaymsg.classList.remove("errors");
+		  displaymsg.classList.add("validated");
+		  
+		     
+			 
+		 window.location.href="./success.html";
+			 
 			  
-			
 			  
-			  
-		 }else{
-		 
-			 displaymsg.textContent="There were errors detected, please re-check before submission";
-		 
 		 }
-		 
+		   
 		 
 		
 	}	 
