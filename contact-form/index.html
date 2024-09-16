@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+   <link href="styles.css" type="text/css" rel="stylesheet" /> 
+</head>
+
+<body>
+
+    <form id="contactform" >
+       
+		
+		<div class="formContainer">
+		
+		 <h1 id="title">Contact Us</h1>
+		 
+		<div class="personalInfo">
+		
+		    <div>
+			<label for="firstname">Firstname:</label>
+			<input type="text" id="firstname" class="formInput"  placeholder="Enter your firstname" name="firstname"  />
+			
+			<p class="errors" id="firstnameErr"></p>
+			</div>
+			
+			<div>
+			<label for="lastname">Lastname:</label>
+			<input type="text" id="lastname" class="formInput" placeholder="Enter your lastname" name="lastname"  />
+			
+			<p class="errors" id="lastnameErr"></p>
+			</div>
+		
+		</div>
+		
+	
+	  
+	  <div class="personalInfo">
+	  
+	     <div>
+		  <label for="email"/>Email Address:</label>
+		  <input type='text' name="email" id='email' class="formInput" placeholder='Enter a vaild email' />
+		  <p class="errors" id="emailErr"></p>
+		 </div>
+		  
+		<div>  
+		  <label for="phone"/>phone number:</label>
+		  <input type='text' id='phone' name="phone" class="formInput" placeholder='e.g. (1)1234567' />
+		
+		   <p class="errors" id="phoneErr"></p>
+		</div>
+		  
+	   </div>
+	  
+	  
+		 
+	  <div id="querySection">
+		 <div>
+			 <label for="query-options"/>How can we help you?</label>
+			  <select class="formInput" id="query-options">
+					<option>--SELECT AN OPTION--</option>
+					<option>General Enquiries</option>
+					<option>Support</option>
+			  </select>
+			  
+		</div>
+
+		<div>
+			<p><strong>Describe your issue:</strong></p>
+
+			<textarea id="querymsg"></textarea>
+			
+			
+		</div>
+	</div>
+   
+
+	 
+	<div id="consentSection" >
+	
+	<input type='checkbox'  name="consent-checkbox" id='consent-checkbox' required/>
+	<label for="consent-checkbox">By clicking this checkbox and submitting the form I consent to being contacted by the Team </label>
+	
+	</div>
+	
+	<input  id="submitButton" type="submit" value="Submit">
+	
+	  
+	  
+	 </div>
+
+    </form>
+	
+	
+	<p id="display-msg"></p>
+
+    <script>
+         let form=document.getElementById("contactform");
+		 form.addEventListener("submit",formSubmit);
+		 
+		
+		 
+		 
+		 function formSubmit(event){
+		 
+		 event.preventDefault();
+		 
+		 
+		 // input fields values
+		 let firstname=event.target.firstname.value;
+		 let lastname=event.target.lastname.value;
+		 let phone=event.target.phone.value;
+		 let email=event.target.email.value;
+		 
+		 
+		 //errors fields
+		 let firstnameErr=document.getElementById("firstnameErr");
+		 let lastnameErr=document.getElementById("lastnameErr");
+		 let phoneErr=document.getElementById("phoneErr");
+		  let emailErr=document.getElementById("emailErr");
+		 
+		 
+		 
+	    function validateForm(){
+		
+		
+		    let verified=true;
+		 
+			 //validation checks 
+
+			 // ensure fields are not empty
+			 
+			 if(firstname.length===0){
+			 
+				firstnameErr.textContent="A firstname is required";
+				verified=false;
+			   
+			 }
+			 
+			 if(lastname.length===0){
+			 
+				lastnameErr.textContent="A lastname is required";
+			    verified=false;
+			 }
+			 
+			 
+			 
+			 if (phone.length===0){
+			 
+				 phoneErr.textContent="Please enter a phone number";
+				 verified=false;
+				   
+			 }
+			 
+			 // regex for to check valid phone numbers
+			  
+			  let phoneRegex= /\+?\(?(\d{1,3})\)?\d{7,11}/ ;
+			  
+			  if (phoneRegex.test(phone)===false){
+					 phoneErr.textContent=
+			"A valid phone number is required, a valid phone number is in form (countrycode)<number> e.g:(1)12345678";
+			 
+			 verified=false;
+			 }
+			 
+			  
+			  //check for unwanted chracters in phone
+			  if (phone.includes("-")||phone.includes(" ")){
+			  
+				  phoneErr.textContent="Please re-enter the number without '-' or spaces";
+				  verified=false;
+			  }
+			  
+			  if (phone.length>15){
+					 phoneErr.textContent=
+			"A valid phone number is required, your phome number is too long";
+			verified=false;
+			  }
+			  
+			  
+			  
+			  
+			  //Simple validation for email
+			  
+			  let emailRegex=/\w+\@\w+\.\w+/;
+			  if (emailRegex.test(email)===false){
+                    emailErr.textContent="please enter a valid email";		
+                    verified=false;					
+			  }
+			  
+			  
+			  
+			  
+			  
+			  
+			 
+		    return verified;
+		}
+		 
+		 
+		//validate the Form 
+		 
+		 let displaymsg=document.getElementById("display-msg");
+		 
+		 if (validateForm()){
+		 
+		  let inputs=document.querySelectorAll(".formInput");
+		  let errs=document.querySelectorAll(".errors");
+		  errs.forEach(err=>err.textContent="");
+		  inputs.forEach(input=>input.value="");
+		  displaymsg.textContent="Your form submission was successful";
+		  displaymsg.classList.remove("errors");
+		  displaymsg.classList.add("validated");
+		  
+		     
+			 
+		 window.location.href="./success.html";
+			 
+			  
+			  
+		 }
+		   
+		 
+		
+	}	 
+		
+		
+		
+		
+		
+    </script>
+</body>
+
+</html>
